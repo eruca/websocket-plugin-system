@@ -1,4 +1,4 @@
-import { Reducer, Store } from '@reduxjs/toolkit';
+import { Reducer, Store, Dispatch, Middleware } from '@reduxjs/toolkit';
 
 export interface IPlugin<TState = any, TComponentProps = any> {
     id: string; // 唯一标识符
@@ -9,7 +9,7 @@ export interface IPlugin<TState = any, TComponentProps = any> {
     getComponent: () =>
         | React.LazyExoticComponent<React.ComponentType<TComponentProps>>
         | React.ComponentType<TComponentProps>; // 获取插件的 React 组件
-    getState: () => any; // 获取插件的状态
+    getState: (store: Store) => any; // 获取插件的状态
     reducer: Reducer<TState>;
 }
 
@@ -17,4 +17,16 @@ export interface IPlugin<TState = any, TComponentProps = any> {
 export interface IPagePlugin<TState = any, TComponentProps = any>
     extends IPlugin<TState, TComponentProps> {
     routePath: string; // 路由路径
+}
+
+export interface Plugin {
+    name: string;
+    reducer: (state: any, action: any) => any;
+    middleware: (context: PluginContext) => Middleware;
+}
+
+export interface PluginContext {
+    dispatch: Dispatch;
+    getState: () => any;
+    getPluginState: (pluginName: string) => any;
 }
