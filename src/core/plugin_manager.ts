@@ -1,27 +1,39 @@
-import { Plugin } from './plugin';
+// src/store/PluginManager.ts
+import { Dispatch, Middleware, Reducer } from '@reduxjs/toolkit';
 
-export class PluginManager {
-    private plugins: Record<string, Plugin> = {};
-    private pluginStates: Record<string, any> = {};
+import dynamicReducersStore, { AppAction, AppState } from '@/redux/store/dynamic_reducer_store';
+
+export interface Plugin {
+    name: string;
+    reducer: Reducer<any, AppAction>;
+    component: React.ComponentType;
+    middleware?: Middleware;
+}
+
+export interface PluginContext {
+    dispatch: Dispatch;
+    getState: () => AppState;
+    getPluginState: (pluginName: string) => any;
+}
+
+class PluginManager {
+    private plugins: Plugin[] = [];
 
     registerPlugin(plugin: Plugin) {
-        this.plugins[plugin.name] = plugin;
-        this.pluginStates[plugin.name] = undefined;
+        this.plugins.push(plugin);
+
+        if (plugin.reducer) {
+            dynamicReducersStore.injectReducer(plugin.name, plugin.reducer);
+        }
+        if (plugin.middleware) {
+            dynamicReducersStore.reconfigureStore();
+        }
     }
 
-    getPlugins(): Plugin[] {
-        return Object.values(this.plugins);
-    }
-
-    getPluginState(pluginName: string): any {
-        return this.pluginStates[pluginName];
-    }
-
-    setPluginState(pluginName: string, state: any) {
-        this.pluginStates[pluginName] = state;
-    }
-
-    getAllPluginStates(): Record<string, any> {
-        return this.pluginStates;
+    getPlugins() {
+        return this.plugins;
     }
 }
+
+const pluginManager = new PluginManager();
+export default pluginManager;

@@ -2,9 +2,10 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '@/redux/store/dynamic_reducer_store';
+import { send_message } from './chat_reducer'
 
 const ChatWindow = () => {
-    const messages = useSelector((state: AppState) => state.chat_plugin?.messages || []);
+    const messages: string[] = useSelector((state: AppState) => state.chat?.messages || []);
     const dispatch = useDispatch();
     const [input, setInput] = useState('');
 
@@ -15,7 +16,7 @@ const ChatWindow = () => {
                 payload: { sender: 'user', content: input },
             };
             console.log("msg", msg);
-            dispatch(msg);
+            dispatch(send_message(input));
             setInput('');
         }
     };
