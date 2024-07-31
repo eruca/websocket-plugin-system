@@ -1,7 +1,7 @@
 // src/store/PluginManager.ts
 import { Dispatch, Middleware, Reducer } from '@reduxjs/toolkit';
 
-import dynamicReducersStore, { AppAction, AppState } from '@/redux/store/dynamic_reducer_store';
+import dynamicReducersStore, { AppAction, AppState } from './dynamic_reducer_store';
 
 export interface Plugin {
     name: string;

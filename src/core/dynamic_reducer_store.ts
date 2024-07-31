@@ -3,8 +3,8 @@ import { configureStore, combineReducers, Reducer, Action } from '@reduxjs/toolk
 
 import { websocketAddr } from '@/settings/system';
 import pluginManager, { Plugin } from '@/core/plugin_manager';
-import wsReducer from '@/redux/middleware/wsSlice';
-import createWsMiddleware from '@/redux/middleware/websocket';
+import wsReducer from '@/core/wsSlice';
+import createWsMiddleware from './websocket';
 
 export interface AppState {
     ws: ReturnType<typeof wsReducer>;
