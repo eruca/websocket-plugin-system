@@ -1,5 +1,5 @@
 // src/store/DynamicReducersStore.ts
-import { configureStore, combineReducers, Reducer, Action } from '@reduxjs/toolkit';
+import { configureStore, combineReducers, Reducer, PayloadAction } from '@reduxjs/toolkit';
 
 import { websocketAddr } from '@/settings/system';
 import pluginManager, { Plugin } from '@/core/plugin_manager';
@@ -11,9 +11,7 @@ export interface AppState {
     [key: string]: any;
 }
 
-export interface AppAction extends Action {
-    payload?: any;
-}
+export type AppAction<T = Record<string, any>> = PayloadAction<T>;
 
 type ReducersMap = { [key: string]: Reducer<any, AppAction> };
 

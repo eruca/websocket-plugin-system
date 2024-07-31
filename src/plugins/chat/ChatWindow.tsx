@@ -1,7 +1,7 @@
 // ChatWindow.tsx
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '@/redux/store/dynamic_reducer_store';
+import { AppState } from '@/core/dynamic_reducer_store';
 import { send_message } from './chat_reducer'
 
 const ChatWindow = () => {
